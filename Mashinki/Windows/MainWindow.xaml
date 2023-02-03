@@ -1,0 +1,167 @@
+﻿<Window x:Class="Mashinki.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mashinki"
+        mc:Ignorable="d" FontFamily="Bahnschrift" FontSize="16" ResizeMode="NoResize"
+        Title="MainWindow" Height="900" Width="1090" Icon="/Resources/x32.png" Closing="Window_Closing">
+    <Grid>
+        <Image Source="/Resources/x256.png" HorizontalAlignment="Left" Margin="998,10,10,792" Width="82" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="Button_Exit" Content="Выход" Style="{StaticResource RoundButton}" Click="Button_Exit_Click"/>
+                <Label x:Name="Label_Search" Content="Поиск: " VerticalContentAlignment="Center"/>
+                <TextBox x:Name="TextBox_SearchBar" Grid.Row="0" VerticalContentAlignment="Center"  Width="300" TextChanged="TextBox_SearchBar_TextChanged"/>
+                <Label x:Name ="Label_Filter" Content="Сортировать по: "/>
+                <ComboBox x:Name="ComboBox_SelectSortType"
+                    DisplayMemberPath="TypeName" 
+                    SelectedIndex="{Binding Id}" 
+                    SelectionChanged="ComboBox_SelectSortType_SelectionChanged" 
+                    Width="120"/>
+                <Button x:Name ="Button_ResetFilter"    Content="Сброс" Style="{StaticResource RoundButton}" Click="Button_ResetFilter_Click"/>
+                <StackPanel Orientation="Horizontal">
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                </StackPanel>
+                <Button x:Name="Button_CreateRow"       Content="Добавить" Style="{StaticResource RoundButton}" Click="Button_CreateRow_Click"/>
+            </StackPanel>
+            <TabControl x:Name="TabControl_Tables" SelectionChanged="TabControl_Tables_SelectionChanged">
+                <TabItem Header="Автомобили">
+                    <DockPanel Background="#c5c3c6" LastChildFill="True">
+                        <DataGrid x:Name="DataGrid_Autos" Grid.Row="1">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Название" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Тип" Binding="{Binding AutoTypes.TypeName}"/>
+                                <DataGridTextColumn Header="ДхШхВ" Binding="{Binding Size, StringFormat={}{0} мм.}"/>
+                                <DataGridTextColumn Header="Стоимость" Binding="{Binding Cost, StringFormat=C, ConverterCulture=ru-RU}"/>
+                                <DataGridTextColumn Header="Клиренс" Binding="{Binding Clarence, StringFormat={}{0} мм.}"/>
+                                <DataGridTextColumn Header="Объем двигателя" Binding="{Binding EngineVolume, StringFormat={}{0} л.}"/>
+                                <DataGridTextColumn Header="Мощность двигателя" Binding="{Binding EnginePower}"/>
+
+                                <DataGridTemplateColumn x:Name="EditRowAuto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button x:Name="RowButtonEdit" Style="{DynamicResource ButtonEdit}" Click="RowButtonEdit_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn x:Name="DeleteRowAuto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button x:Name="RowButtonRemove" Style="{DynamicResource ButtonRemove}" Click="RowButtonRemove_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Клиенты">
+                    <DockPanel Background="#c5c3c6" LastChildFill="True">
+                        <DataGrid x:Name="DataGrid_Clients">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Фамилия" Binding="{Binding FirstName}"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding MiddleName}"/>
+                                <DataGridTextColumn Header="Отчество" Binding="{Binding LastName}"/>
+                                <DataGridTextColumn Header="Пол" Binding="{Binding Gender}"/>
+                                <DataGridTextColumn Header="Дата рождения" Binding="{Binding DateOfBirth}"/>
+                                <DataGridTextColumn Header="Дата регистрации" Binding="{Binding DateOfRegistration}"/>
+
+                                <DataGridTemplateColumn x:Name="EditRowClient">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button x:Name="RowButtonEdit" Style="{DynamicResource ButtonEdit}" Click="RowButtonEdit_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn x:Name="DeleteRowClient">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button x:Name="RowButtonRemove" Style="{DynamicResource ButtonRemove}" Click="RowButtonRemove_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="История покупок">
+                    <DockPanel Background="#c5c3c6" LastChildFill="True">
+                        <DataGrid x:Name="DataGrid_Purchases">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Клиент">
+                                    <DataGridTextColumn.Binding>
+                                        <MultiBinding StringFormat="{}{0} {1} {2}">
+                                            <Binding Path="Client.FirstName"/>
+                                            <Binding Path="Client.MiddleName"/>
+                                            <Binding Path="Client.LastName"/>
+                                        </MultiBinding>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Авто" Binding="{Binding Auto.Name}"/>
+                                <DataGridTextColumn Header="Дата покупки" Binding="{Binding DateOfPurchase}"/>
+
+                                <DataGridTemplateColumn x:Name="EditRowPurchase">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button x:Name="RowButtonEdit" Style="{DynamicResource ButtonEdit}" Click="RowButtonEdit_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn x:Name="DeleteRowPurchase">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button x:Name="RowButtonRemove" Style="{DynamicResource ButtonRemove}" Click="RowButtonRemove_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Типы">
+                    <DockPanel Background="#c5c3c6" LastChildFill="True">
+                        <DataGrid x:Name="DataGrid_AutoTypes">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Название" Binding="{Binding TypeName}"/>
+                                
+                                <DataGridTemplateColumn x:Name="EditRowAutoType">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button x:Name="RowButtonEdit" Style="{DynamicResource ButtonEdit}" Click="RowButtonEdit_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn x:Name="DeleteRowAutoType">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button x:Name="RowButtonRemove" Style="{DynamicResource ButtonRemove}" Click="RowButtonRemove_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </Grid>
+</Window>

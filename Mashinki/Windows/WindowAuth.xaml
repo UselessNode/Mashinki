@@ -1,0 +1,51 @@
+﻿<Window x:Class="Mashinki.WindowAuth"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mashinki"
+        mc:Ignorable="d"
+        Title="Авторизация" 
+        Height="400" Width="400"
+        Background="#383838"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#3a365a"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel Margin="16">
+        <Image x:Name="LogoImage"
+               Height="190" 
+               Width="250" Source="/Resources/Auth_Image.png"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <PasswordBox 
+                x:Name="PasswordInput" 
+                Width="128"/>
+            <Label 
+                    Content="Пароль" Width="64"/>
+        </StackPanel>
+        <Button 
+            x:Name="LogInButton" Content="Вход" Width="96px" 
+            Click="loginButtonClick" Margin="0,8,0,0"/>
+        <Button x:Name="Button_Guest"
+            Width="96px" Background="Transparent" BorderThickness="0" Click="Button_Guest_Click">
+            <TextBlock Text="Войти как гость" Cursor="Hand"
+            Foreground="#9c90f2" TextDecorations="Underline"/>
+        </Button>
+    </StackPanel>
+</Window>
