@@ -19,8 +19,8 @@ namespace Mashinki.Seeding
             auto.Name = RandomNameString(10);
             auto.AutoTypes = new AutoTypesSeeder().GenerateAutoType(id);
             auto.Clarence = random.Next(100, 180);
-            auto.Cost = random.Next(100_000, 2_020_000);
-            auto.EnginePower = random.Next(70, 200);
+            auto.Cost = random.Next(50_000, 3_000_000);
+            auto.EnginePower = random.Next(50, 500);
             auto.EngineVolume = (double)random.Next(1, 10) / 10d;
             return auto;
         }
